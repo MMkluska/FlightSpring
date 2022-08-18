@@ -1,0 +1,55 @@
+#createDiv {
+
+    border: solid 2px green;
+    border-radius: 5px;
+    display: inline-grid;
+    margin: 2%;
+    width: 30%;
+    padding: 10px
+
+}
+
+#resultDiv {
+
+    border: solid 2px black;
+    border-radius: 5px;
+    display: inline-grid;
+    margin: 2%;
+    width: 60%;
+    padding: 10px
+}
+
+#deleteDiv {
+
+
+    border: solid 2px red;
+    border-radius: 5px;
+    margin: 2%;
+    width: 30%;
+    padding: 10px
+
+}
+
+#updateDiv {
+
+
+    border: solid 2px blue;
+    border-radius: 5px;
+    margin: 2%;
+    width: 96%;
+    padding: 10px
+
+}
+
+.tempDiv {
+
+    border: solid 2px black;
+    border-radius: 5px;
+    margin-top:5px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align:center;
+    width: 80%;
+    background-color: lightgray;
+    
+}

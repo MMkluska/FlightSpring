@@ -28,7 +28,7 @@ public class Flight {
 	private String airlines;
 
 	@Column
-	private LocalDate flightDate;
+	private LocalDate date;
 
 	@Column(precision = 10, scale = 2)
 	private BigDecimal price;
@@ -41,24 +41,24 @@ public class Flight {
 	}
 
 	// For creating
-	public Flight(String startLocation, String endLocation, String airlines, LocalDate flightDate, BigDecimal price) {
+	public Flight(String startLocation, String endLocation, String airlines, LocalDate date, BigDecimal price) {
 		super();
 		this.startLocation = startLocation;
 		this.endLocation = endLocation;
 		this.airlines = airlines;
-		this.flightDate = flightDate;
+		this.date = date;
 		this.price = price;
 	}
 
 	// For reading
-	public Flight(long id, String startLocation, String endLocation, String airlines, LocalDate flightDate,
+	public Flight(long id, String startLocation, String endLocation, String airlines, LocalDate date,
 			BigDecimal price) {
 		super();
 		this.id = id;
 		this.startLocation = startLocation;
 		this.endLocation = endLocation;
 		this.airlines = airlines;
-		this.flightDate = flightDate;
+		this.date = date;
 		this.price = price;
 	}
 
@@ -96,11 +96,11 @@ public class Flight {
 	}
 
 	public LocalDate getDate() {
-		return flightDate;
+		return date;
 	}
 
-	public void setDate(LocalDate flightDate) {
-		this.flightDate = flightDate;
+	public void setDate(LocalDate date) {
+		this.date = date;
 	}
 
 	public BigDecimal getPrice() {
@@ -113,7 +113,7 @@ public class Flight {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(airlines, flightDate, endLocation, id, price, startLocation);
+		return Objects.hash(airlines, date, endLocation, id, price, startLocation);
 	}
 
 	@Override
@@ -125,7 +125,7 @@ public class Flight {
 		if (getClass() != obj.getClass())
 			return false;
 		Flight other = (Flight) obj;
-		return Objects.equals(airlines, other.airlines) && Objects.equals(flightDate, other.flightDate)
+		return Objects.equals(airlines, other.airlines) && Objects.equals(date, other.date)
 				&& Objects.equals(endLocation, other.endLocation) && id == other.id
 				&& Objects.equals(price, other.price) && Objects.equals(startLocation, other.startLocation);
 	}
