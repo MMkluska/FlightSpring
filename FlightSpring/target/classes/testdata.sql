@@ -1,0 +1,1 @@
+INSERT INTO `flight` (`start_location`,`end_location`,`airlines`,`flight_date`,`price`) VALUES ('London','Madrid','Lot', '2022-01-01' , 10.99 )
