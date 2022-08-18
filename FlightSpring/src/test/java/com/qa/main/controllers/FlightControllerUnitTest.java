@@ -13,30 +13,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qa.main.domain.Flight;
+import com.qa.main.services.FlightService;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@Sql(scripts = { "classpath:testschema.sql",
-		"classpath:testdata.sql" }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-@ActiveProfiles("test") // Switching to H2 for testing
-public class FlightControllerIntegrationTest {
+@WebMvcTest
+public class FlightControllerUnitTest {
 
 	@Autowired
 	private MockMvc mvc;
 
 	@Autowired
 	private ObjectMapper mapper; // Used for converting objects to JSON
+
+	@MockBean
+	private FlightService service;
 
 	@Test
 	public void createTest() throws Exception {
@@ -51,6 +49,8 @@ public class FlightControllerIntegrationTest {
 				BigDecimal.valueOf(15.99));
 		String resultAsJSON = mapper.writeValueAsString(result);
 
+		Mockito.when(service.create(entry)).thenReturn(result);
+
 		mvc.perform(post("/flight/create").contentType(MediaType.APPLICATION_JSON).content(entryAsJSON))
 				.andExpect(status().isCreated()).andExpect(content().json(resultAsJSON));
 	}
@@ -62,6 +62,8 @@ public class FlightControllerIntegrationTest {
 		result.add(new Flight(1L, "London", "Madrid", "Lot", LocalDate.of(2022, 01, 01), BigDecimal.valueOf(10.99)));
 		String resultAsJSON = mapper.writeValueAsString(result);
 
+		Mockito.when(service.getAll()).thenReturn(result);
+
 		mvc.perform(get("/flight/getAll").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(content().json(resultAsJSON));
 	}
@@ -71,6 +73,8 @@ public class FlightControllerIntegrationTest {
 		Flight result = new Flight(1L, "London", "Madrid", "Lot", LocalDate.of(2022, 01, 01),
 				BigDecimal.valueOf(10.99));
 		String resultAsJSON = mapper.writeValueAsString(result);
+
+		Mockito.when(service.getById(1L)).thenReturn(result);
 
 		mvc.perform(get("/flight/getById/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
 				.andExpect(content().json(resultAsJSON));
@@ -88,6 +92,8 @@ public class FlightControllerIntegrationTest {
 				BigDecimal.valueOf(15.99));
 		String resultAsJSON = mapper.writeValueAsString(result);
 
+		Mockito.when(service.updateById(1L, entry)).thenReturn(result);
+
 		mvc.perform(put("/flight/update/1").contentType(MediaType.APPLICATION_JSON).content(entryAsJSON))
 				.andExpect(status().isNoContent()).andExpect(content().json(resultAsJSON));
 
@@ -95,7 +101,11 @@ public class FlightControllerIntegrationTest {
 
 	@Test
 	public void deleteTest() throws Exception {
+
+		Mockito.when(service.deleteById(1L)).thenReturn(true);
+
 		mvc.perform(delete("/flight/delete/1").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNoContent());
 	}
+
 }
