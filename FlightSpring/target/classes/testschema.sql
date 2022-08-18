@@ -5,7 +5,7 @@ CREATE TABLE `flight`(
 	`start_location` VARCHAR(255),
 	`end_location` VARCHAR(255),
 	`airlines` VARCHAR(255),
-	`flight_date` DATE,
+	`date` DATE,
 	`price` DECIMAL(10,2),
 	PRIMARY KEY(`id`)
 );
