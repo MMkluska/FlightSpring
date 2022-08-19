@@ -40,24 +40,25 @@ A unit is the smallest whole increment, from which this testing gets its name. I
 
 ```
 @Test
-	public void updateByIdTest() {
+public void updateByIdTest() {
+	
+	long id = 1L;
+	// Create an object for posting
+	Flight entry = new Flight("Paris", "Malaga", "Paris Airlines", LocalDate.of(2022, 05, 01),
+			BigDecimal.valueOf(15.99));
+	// Recieve an existing object 
+	Flight existing = new Flight(1L, "London", "Madrid", "Lot", LocalDate.of(2022, 01, 01),
+			BigDecimal.valueOf(10.99));
+	Mockito.when(repo.findById(id)).thenReturn(Optional.of(existing));
+	// Create an object for checking the result
+	Flight update = new Flight(1L, "Paris", "Malaga", "Paris Airlines", LocalDate.of(2022, 05, 01),
+			BigDecimal.valueOf(15.99));
 
-		long id = 1L;
+	Mockito.when(repo.saveAndFlush(update)).thenReturn(update);
 
-		Flight entry = new Flight("Paris", "Malaga", "Paris Airlines", LocalDate.of(2022, 05, 01),
-				BigDecimal.valueOf(15.99));
-		Flight existing = new Flight(1L, "London", "Madrid", "Lot", LocalDate.of(2022, 01, 01),
-				BigDecimal.valueOf(10.99));
-		Mockito.when(repo.findById(id)).thenReturn(Optional.of(existing));
+	assertEquals(update, service.updateById(id, entry));
 
-		Flight update = new Flight(1L, "Paris", "Malaga", "Paris Airlines", LocalDate.of(2022, 05, 01),
-				BigDecimal.valueOf(15.99));
-
-		Mockito.when(repo.saveAndFlush(update)).thenReturn(update);
-
-		assertEquals(update, service.updateById(id, entry));
-
-	}
+}
 ```
 
 ### Integration Testing
@@ -66,22 +67,22 @@ Integration testing is the phase in software testing in which individual softwar
 
 ```
 @Test
-	public void createTest() throws Exception {
+public void createTest() throws Exception {
 
-		// Create an object for posting
-		Flight entry = new Flight("Paris", "Malaga", "Paris Airlines", LocalDate.of(2022, 05, 01),
-				BigDecimal.valueOf(15.99));
-		String entryAsJSON = mapper.writeValueAsString(entry);
+	// Create an object for posting
+	Flight entry = new Flight("Paris", "Malaga", "Paris Airlines", LocalDate.of(2022, 05, 01),
+			BigDecimal.valueOf(15.99));
+	String entryAsJSON = mapper.writeValueAsString(entry);
 
-		// Create an object for checking the result
-		Flight result = new Flight(2L, "Paris", "Malaga", "Paris Airlines", LocalDate.of(2022, 05, 01),
-				BigDecimal.valueOf(15.99));
-		String resultAsJSON = mapper.writeValueAsString(result);
+	// Create an object for checking the result
+	Flight result = new Flight(2L, "Paris", "Malaga", "Paris Airlines", LocalDate.of(2022, 05, 01),
+			BigDecimal.valueOf(15.99));
+	String resultAsJSON = mapper.writeValueAsString(result);
 
-		mvc.perform(post("/flight/create")
-				.contentType(MediaType.APPLICATION_JSON).content(entryAsJSON))
-				.andExpect(status().isCreated()).andExpect(content().json(resultAsJSON));
-	}
+	mvc.perform(post("/flight/create")
+			.contentType(MediaType.APPLICATION_JSON).content(entryAsJSON))
+			.andExpect(status().isCreated()).andExpect(content().json(resultAsJSON));
+}
 ```
 
 ## Built With
