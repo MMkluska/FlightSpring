@@ -41,7 +41,7 @@
 
 }
 
-.tempDiv {
+.childDiv {
 
     border: solid 2px black;
     border-radius: 5px;
@@ -50,6 +50,27 @@
     margin-right: auto;
     text-align:center;
     width: 80%;
-    background-color: lightgray;
+    background-color: rgb(243, 240, 240);
     
 }
+
+.btn-sm {
+    margin: 5px;
+    
+}
+
+body {
+    background: rgb(2,0,36);
+    background: linear-gradient(0deg, rgba(2,0,36,1) 0%, rgba(115,115,172,1) 50%, rgba(246,251,252,1) 100%);
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    padding-top: 10px;
+    border-top: solid 2px black;
+    background-color: rgb(243, 240, 240);
+    text-align: center;
+  }

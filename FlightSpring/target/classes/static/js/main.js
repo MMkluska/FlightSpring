@@ -3,8 +3,6 @@
 // Selectors
 
 let createBtn = document.querySelector("#createBtn");
-let deleteBtn = document.querySelector("#deleteBtn");
-let updateBtn = document.querySelector("#updateBtn");
 
 let startInput = document.querySelector("#startInput");
 let endInput = document.querySelector("#endInput");
@@ -19,9 +17,32 @@ let resultDiv = document.querySelector("#resultDiv");
 // Functions
 
 let print = (result) => {
+
+
     let tempDiv = document.createElement("div");
     tempDiv.setAttribute("class", "tempDiv");
-    tempDiv.textContent = `Id: ${result.id} | Departure: ${result.startLocation} | Arrival: ${result.endLocation} | Airlines: ${result.airlines} | Date: ${result.date} | Price: ${result.price}`;
+
+
+    let childDiv = document.createElement("div");
+    tempDiv.setAttribute("class", "childDiv");
+    
+    childDiv.textContent = `Id: ${result.id} | Departure: ${result.startLocation} | Arrival: ${result.endLocation} | Airlines: ${result.airlines} | Date: ${result.date} | Price: ${result.price}`;
+
+    let updateBtn = document.createElement("button");
+    updateBtn.textContent = "Update";
+    updateBtn.type = "button";
+    updateBtn.setAttribute("Class", "btn btn-sm btn-primary ");
+    updateBtn.setAttribute("onClick", `update(${result.id})`);
+
+    let deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "Delete";
+    deleteBtn.type = "button";
+    deleteBtn.setAttribute("Class", "btn btn-sm btn-danger ");
+    deleteBtn.setAttribute("onClick", `delById(${result.id})`);
+
+    childDiv.appendChild(updateBtn);
+    childDiv.appendChild(deleteBtn);
+    tempDiv.appendChild(childDiv);
     resultDiv.appendChild(tempDiv);
 
 }
@@ -63,10 +84,10 @@ let create = () => {
         });
 }
 
-let update = () => {
+let update = (id) => {
 
     let obj = {
-        "id": idUpdate.value,
+        "id": id,
         "startLocation": startInput.value,
         "endLocation": endInput.value,
         "airlines": airlinesInput.value,
@@ -74,7 +95,7 @@ let update = () => {
         "price": priceInput.value
     }
 
-    axios.put(`http://localhost:8080/flight/update/${idUpdate.value}`, obj)
+    axios.put(`http://localhost:8080/flight/update/${id}`, obj)
         .then(res => {
             getAll();
         })
@@ -83,8 +104,8 @@ let update = () => {
         });
 }
 
-let delById = () => {
-    axios.delete(`http://localhost:8080/flight/delete/${idDelete.value}`)
+let delById = (id) => {
+    axios.delete(`http://localhost:8080/flight/delete/${id}`)
         .then(res => {
             getAll();
         })
@@ -96,5 +117,3 @@ let delById = () => {
 // Listners
 
 createBtn.addEventListener("click", create);
-deleteBtn.addEventListener("click", delById);
-updateBtn.addEventListener("click", update);
